@@ -1,4 +1,4 @@
-# Api for Youtube Video Fetech using Flask Web Framework
+# Api for Youtube Video Fetch using Flask Web Framework
 
 A Flask-based web app that fetches and displays the latest videos sorted in reverse chronological order of their publishing date-time from YouTube
 videos for a given search query. 

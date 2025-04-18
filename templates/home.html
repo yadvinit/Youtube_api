@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Api</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .search-form {
+            margin-bottom: 20px;
+        }
+        .video-card {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .video-title {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+        .video-meta {
+            color: #666;
+            font-size: 14px;
+        }
+        .thumbnail {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+        .pagination {
+            margin-top: 20px;
+        }
+        .pagination a {
+            padding: 8px 16px;
+            text-decoration: none;
+            background-color: #f1f1f1;
+            color: black;
+            border-radius: 5px;
+            margin-right: 5px;
+        }
+        .error {
+            color: red;
+            padding: 10px;
+            background-color: #ffeeee;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Video Fetch</h1>
+    
+    <div class="search-form">
+        <form action="/" method="GET">
+            <input type="text" name="q" value="{{ query }}" placeholder="Search videos...">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    
+    {% if error %}
+    <div class="error">
+        {{ error }}
+    </div>
+    {% endif %}
+    
+    <h2>Latest videos for: "{{ query }}"</h2>
+    
+    {% if videos %}
+        {% for video in videos %}
+        <div class="video-card">
+            <a href="{{ video.video_url }}" target="_blank">
+                <img class="thumbnail" src="{{ video.thumbnail }}" alt="{{ video.title }}">
+            </a>
+            <div class="video-title">
+                <a href="{{ video.video_url }}" target="_blank">{{ video.title }}</a>
+            </div>
+            <div class="video-meta">
+                Channel: {{ video.channel }}<br>
+                Published: {{ video.published_at }}
+            </div>
+        </div>
+        {% endfor %}
+        
+        <div class="pagination">
+            {% if prev_token %}
+            <a href="/?q={{ query }}&pageToken={{ prev_token }}">⬅️ Previous</a>
+            {% endif %}
+            
+            {% if next_token %}
+            <a href="/?q={{ query }}&pageToken={{ next_token }}">Next ➡️</a>
+            {% endif %}
+        </div>
+    {% else %}
+        <p>No videos found for "{{ query }}".</p>
+    {% endif %}
+</body>
+</html>
